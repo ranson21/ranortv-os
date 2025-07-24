@@ -1,0 +1,26 @@
+{
+    "ui": {
+        "theme": "dark",
+        "animations": true,
+        "grid_columns": 5,
+        "tile_size": 200,
+        "focus_scale": 1.05
+    },
+    "system": {
+        "auto_updates": true,
+        "parental_controls": false,
+        "network_timeout": 30,
+        "boot_splash": true
+    },
+    "apps": {
+        "sandbox_level": "strict",
+        "allow_network": false,
+        "data_directory": "/apps",
+        "auto_install_updates": true
+    },
+    "store": {
+        "store_url": "https://store.ranortv.com",
+        "auto_check_updates": true,
+        "featured_refresh_interval": 3600
+    }
+}

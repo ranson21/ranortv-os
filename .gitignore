@@ -1,0 +1,94 @@
+# RanorTV .gitignore
+
+# Rust build outputs
+launcher/target/
+**/target/
+**/*.rs.bk
+Cargo.lock
+
+# Buildroot build outputs
+buildroot/output/
+buildroot/dl/
+buildroot/.config
+buildroot/.config.old
+buildroot/host/
+buildroot/staging/
+buildroot/toolchain/
+
+# Distribution files
+dist/
+*.img
+*.iso
+*.tar.gz
+*.zip
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Node.js (for tools)
+node_modules/
+npm-debug.log*
+
+# Python (for scripts)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Docker
+.dockerignore
+
+# Test outputs
+test-results/
+coverage/
+
+# Local development
+local/
+dev-*
+test-*
+SETUP_COMPLETE.md
+
+# Keys and certificates
+*.key
+*.pem
+*.cert
+secrets/
+
+# Build artifacts
+*.o
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+
+# QEMU files
+*.qcow2
+*.vdi
+*.vmdk

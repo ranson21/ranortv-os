@@ -1,0 +1,9 @@
+{
+    "id": "plex",
+    "name": "Plex",
+    "description": "Media streaming platform",
+    "version": "2.1.0",
+    "category": "Entertainment",
+    "executable_path": "./run.sh",
+    "icon_path": "./icon.png"
+}

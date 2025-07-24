@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# Start RanorTV launcher
+#
+
+case "$1" in
+  start)
+    echo "Starting RanorTV launcher..."
+    # Set up display
+    export DISPLAY=:0
+    # Start launcher
+    /usr/bin/ranortv-launcher &
+    ;;
+  stop)
+    echo "Stopping RanorTV launcher..."
+    killall ranortv-launcher 2>/dev/null || true
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?

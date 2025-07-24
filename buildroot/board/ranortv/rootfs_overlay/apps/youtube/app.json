@@ -1,0 +1,9 @@
+{
+    "id": "youtube",
+    "name": "YouTube",
+    "description": "Watch videos online",
+    "version": "1.0.0",
+    "category": "Entertainment",
+    "executable_path": "./run.sh",
+    "icon_path": "./icon.png"
+}

@@ -1,0 +1,9 @@
+{
+    "id": "netflix",
+    "name": "Netflix",
+    "description": "Stream movies and TV shows",
+    "version": "3.0.1",
+    "category": "Entertainment",
+    "executable_path": "./run.sh",
+    "icon_path": "./icon.png"
+}
