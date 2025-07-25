@@ -199,7 +199,10 @@ component TopBar inherits Rectangle {
 // Featured section component (Apple TV style hero)
 component FeaturedSection inherits Rectangle {
     in property <[AppItem]> apps;
+    in-out property <int> focused-index: 0;  // Changed to in-out for two-way binding
     callback app-clicked(string);
+    callback focus-changed(int);  // Notify when focus changes
+    
     height: 400px;
     VerticalBox {
         spacing: 20px;
@@ -218,8 +221,11 @@ component FeaturedSection inherits Rectangle {
                 padding: 10px;
                 for app[i] in apps: AppTile {
                     app: app;
-                    large: i == 0; // First app is larger
+                    focused: i == root.focused-index;  // Check if this tile is focused
+                    large: i == root.focused-index;    // Make focused tile large
                     clicked => {
+                        root.focused-index = i;  // Now this works with in-out
+                        root.focus-changed(i);
                         root.app-clicked(app.id);
                     }
                 }
@@ -232,7 +238,10 @@ component FeaturedSection inherits Rectangle {
 component AppGrid inherits Rectangle {
     in property <[AppItem]> apps;
     in property <string> title;
+    in-out property <int> focused-index: 0;  // Changed to in-out for two-way binding
     callback app-clicked(string);
+    callback focus-changed(int);  // Notify when focus changes
+    
     VerticalBox {
         spacing: 20px;
         Text {
@@ -248,7 +257,10 @@ component AppGrid inherits Rectangle {
                 spacing: 20px;
                 for app[i] in apps: AppTile {
                     app: app;
+                    focused: i == root.focused-index;  // Check if this tile is focused
                     clicked => {
+                        root.focused-index = i;  // Now this works with in-out
+                        root.focus-changed(i);
                         root.app-clicked(app.id);
                     }
                 }
@@ -402,11 +414,17 @@ export component AppWindow inherits Window {
     in-out property <[AppItem]> installed-apps;
     in-out property <[AppItem]> store-apps;
     
+    // Focus management properties
+    in-out property <int> featured-focus: 0;
+    in-out property <int> apps-focus: 0;
+    in-out property <int> store-focus: 0;
+    
     // Callbacks
     callback launch-app(string);
     callback navigate(string);
     callback switch-tab(int);
     callback refresh-store();
+    callback focus-changed(int, int);  // (tab, index)
     
     // Window properties for fullscreen kiosk mode
     title: "RanorTV";
@@ -464,24 +482,39 @@ export component AppWindow inherits Window {
                             spacing: 40px;
                             FeaturedSection {
                                 apps: featured-apps;
+                                focused-index: root.featured-focus;
                                 app-clicked(id) => {
                                     root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.featured-focus = index;
+                                    root.focus-changed(0, index);
                                 }
                             }
 
                             AppGrid {
                                 title: "Recently Used";
                                 apps: installed-apps;
+                                focused-index: root.apps-focus;
                                 app-clicked(id) => {
                                     root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.apps-focus = index;
+                                    root.focus-changed(1, index);
                                 }
                             }
                         }
                         if current-tab == 1: AppGrid {
                             title: "All Apps";
                             apps: installed-apps;
+                            focused-index: root.apps-focus;
                             app-clicked(id) => {
                                 root.launch-app(id);
+                            }
+                            focus-changed(index) => {
+                                root.apps-focus = index;
+                                root.focus-changed(1, index);
                             }
                         }
                         if current-tab == 2: VerticalBox {
@@ -509,8 +542,13 @@ export component AppWindow inherits Window {
                             AppGrid {
                                 title: "Available Apps";
                                 apps: store-apps;
+                                focused-index: root.store-focus;
                                 app-clicked(id) => {
                                     root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.store-focus = index;
+                                    root.focus-changed(2, index);
                                 }
                             }
                         }

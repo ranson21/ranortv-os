@@ -6,11 +6,11 @@ description = "Apple TV-style media launcher for RanorTV OS"
 authors = ["RanorTV Team"]
 
 [dependencies]
-# Slint UI framework - Ubuntu-compatible configuration
+# Slint UI framework - using minimal backend to avoid X11 issues
 slint = { version = "1.12", default-features = false, features = [
   "std",
-  "backend-winit",    # Cross-platform windowing (works great on Ubuntu)
-  "renderer-femtovg", # Software renderer (no OpenGL/Qt dependencies)
+  "backend-winit",
+  "renderer-software", # Software renderer - no GPU/X11 dependencies
   "compat-1-2",
 ] }
 
