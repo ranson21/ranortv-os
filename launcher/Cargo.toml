@@ -1,35 +1,30 @@
 [package]
-name = "media-launcher"
+name = "ranortv-launcher"
 version = "0.1.0"
 edition = "2021"
+description = "Apple TV-style media launcher for RanorTV OS"
+authors = ["RanorTV Team"]
 
 [dependencies]
-# Slint UI framework - much more robust than egui
-slint = { version = "1.3", default-features = false, features = [
+# Slint UI framework - Ubuntu-compatible configuration
+slint = { version = "1.12", default-features = false, features = [
   "std",
-  "renderer-gl",   # OpenGL renderer for hardware acceleration
-  "accessibility", # For accessibility support
+  "backend-winit",    # Cross-platform windowing (works great on Ubuntu)
+  "renderer-femtovg", # Software renderer (no OpenGL/Qt dependencies)
+  "compat-1-2",
 ] }
 
-# Minimal serde for app metadata
-serde = { version = "1.0", default-features = false, features = ["derive"] }
-serde_json = { version = "1.0", default-features = false }
+# Serialization for app metadata
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [build-dependencies]
-slint-build = "1.3"
+slint-build = "1.12"
 
 [profile.release]
-# Optimize for size and performance
+# Optimize for size and performance in production
 opt-level = "z"   # Optimize for size
 lto = true        # Link-time optimization
 codegen-units = 1 # Single codegen unit for better optimization
 panic = "abort"   # Smaller panic handling
 strip = true      # Strip debug symbols
-
-# Reduce binary size further
-[profile.release.package."*"]
-opt-level = "z"
-
-# Optional: completely static linking for musl
-[target.x86_64-unknown-linux-musl]
-rustflags = ["-C", "target-feature=+crt-static"]

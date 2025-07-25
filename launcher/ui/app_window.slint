@@ -1,5 +1,5 @@
 // Apple TV-style Media OS Interface
-import { Button, VerticalBox, HorizontalBox, GridBox, ScrollView } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
 
 // App item structure
 export struct AppItem {
@@ -15,9 +15,7 @@ component AppTile inherits Rectangle {
     in property <AppItem> app;
     in property <bool> focused: false;
     in property <bool> large: false;
-    
     callback clicked();
-    
     width: large ? 280px : 200px;
     height: large ? 160px : 120px;
     border-radius: 8px;
@@ -25,12 +23,11 @@ component AppTile inherits Rectangle {
     border-width: focused ? 2px : 0px;
     border-color: #ffffff80;
     
-    // Hover/focus animation
+    // Focus animations (using opacity instead of scale)
+    opacity: focused ? 1.0 : 0.8;
     animate background { duration: 200ms; }
     animate border-width { duration: 200ms; }
-    animate scale { duration: 200ms; }
-    
-    scale: focused ? 1.05 : 1.0;
+    animate opacity { duration: 200ms; }
     
     // Drop shadow effect
     Rectangle {
@@ -42,7 +39,7 @@ component AppTile inherits Rectangle {
         background: #00000040;
         z: -1;
     }
-    
+
     VerticalBox {
         padding: 12px;
         spacing: 8px;
@@ -50,11 +47,10 @@ component AppTile inherits Rectangle {
         // App icon placeholder
         Rectangle {
             height: large ? 80px : 60px;
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             border-radius: 6px;
-            
             Text {
-                text: app.name.slice(0, 1);
+                text: app.name;
                 color: white;
                 font-size: large ? 32px : 24px;
                 font-weight: 600;
@@ -73,7 +69,7 @@ component AppTile inherits Rectangle {
             overflow: elide;
         }
     }
-    
+
     TouchArea {
         clicked => {
             root.clicked();
@@ -85,10 +81,8 @@ component AppTile inherits Rectangle {
 component TopBar inherits Rectangle {
     in property <int> current-tab;
     callback tab-clicked(int);
-    
     height: 80px;
     background: #00000060;
-    
     HorizontalBox {
         padding: 20px;
         spacing: 40px;
@@ -96,70 +90,109 @@ component TopBar inherits Rectangle {
         
         // Logo/Title
         Text {
-            text: "Media OS";
+            text: "RanorTV";
             color: white;
             font-size: 24px;
             font-weight: 700;
             horizontal-alignment: center;
         }
-        
-        Rectangle { width: 1fr; } // Spacer
+
+        Rectangle { 
+            // Spacer - use specific width instead of fr
+            min-width: 100px;
+        }
         
         // Tab buttons
         HorizontalBox {
             spacing: 30px;
-            
-            TabButton {
-                text: "Home";
-                active: current-tab == 0;
-                clicked => { root.tab-clicked(0); }
+            Rectangle {
+                width: 80px;
+                height: 40px;
+                border-radius: 20px;
+                background: current-tab == 0 ? #ffffff30 : transparent;
+                animate background { duration: 200ms; }
+                Text {
+                    text: "Home";
+                    color: current-tab == 0 ? white : #ffffff80;
+                    font-size: 14px;
+                    font-weight: current-tab == 0 ? 600 : 400;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => {
+                        root.tab-clicked(0);
+                    }
+                }
             }
-            
-            TabButton {
-                text: "Apps";
-                active: current-tab == 1;
-                clicked => { root.tab-clicked(1); }
+
+            Rectangle {
+                width: 80px;
+                height: 40px;
+                border-radius: 20px;
+                background: current-tab == 1 ? #ffffff30 : transparent;
+                animate background { duration: 200ms; }
+                Text {
+                    text: "Apps";
+                    color: current-tab == 1 ? white : #ffffff80;
+                    font-size: 14px;
+                    font-weight: current-tab == 1 ? 600 : 400;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => {
+                        root.tab-clicked(1);
+                    }
+                }
             }
-            
-            TabButton {
-                text: "Store";
-                active: current-tab == 2;
-                clicked => { root.tab-clicked(2); }
+
+            Rectangle {
+                width: 80px;
+                height: 40px;
+                border-radius: 20px;
+                background: current-tab == 2 ? #ffffff30 : transparent;
+                animate background { duration: 200ms; }
+                Text {
+                    text: "Store";
+                    color: current-tab == 2 ? white : #ffffff80;
+                    font-size: 14px;
+                    font-weight: current-tab == 2 ? 600 : 400;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => {
+                        root.tab-clicked(2);
+                    }
+                }
             }
-            
-            TabButton {
-                text: "Settings";
-                active: current-tab == 3;
-                clicked => { root.tab-clicked(3); }
+
+            Rectangle {
+                width: 80px;
+                height: 40px;
+                border-radius: 20px;
+                background: current-tab == 3 ? #ffffff30 : transparent;
+                animate background { duration: 200ms; }
+                Text {
+                    text: "Settings";
+                    color: current-tab == 3 ? white : #ffffff80;
+                    font-size: 14px;
+                    font-weight: current-tab == 3 ? 600 : 400;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => {
+                        root.tab-clicked(3);
+                    }
+                }
             }
         }
-    }
-}
-
-// Tab button component
-component TabButton inherits Rectangle {
-    in property <string> text;
-    in property <bool> active: false;
-    callback clicked();
-    
-    width: 80px;
-    height: 40px;
-    border-radius: 20px;
-    background: active ? #ffffff30 : transparent;
-    
-    animate background { duration: 200ms; }
-    
-    Text {
-        text: root.text;
-        color: active ? white : #ffffff80;
-        font-size: 14px;
-        font-weight: active ? 600 : 400;
-        horizontal-alignment: center;
-        vertical-alignment: center;
-    }
-    
-    TouchArea {
-        clicked => { root.clicked(); }
     }
 }
 
@@ -167,12 +200,9 @@ component TabButton inherits Rectangle {
 component FeaturedSection inherits Rectangle {
     in property <[AppItem]> apps;
     callback app-clicked(string);
-    
     height: 400px;
-    
     VerticalBox {
         spacing: 20px;
-        
         Text {
             text: "Featured";
             color: white;
@@ -180,18 +210,18 @@ component FeaturedSection inherits Rectangle {
             font-weight: 700;
             horizontal-alignment: left;
         }
-        
+
         ScrollView {
-            viewport-height: 320px;
-            
+            height: 320px;
             HorizontalBox {
                 spacing: 20px;
                 padding: 10px;
-                
                 for app[i] in apps: AppTile {
                     app: app;
                     large: i == 0; // First app is larger
-                    clicked => { root.app-clicked(app.id); }
+                    clicked => {
+                        root.app-clicked(app.id);
+                    }
                 }
             }
         }
@@ -203,10 +233,8 @@ component AppGrid inherits Rectangle {
     in property <[AppItem]> apps;
     in property <string> title;
     callback app-clicked(string);
-    
     VerticalBox {
         spacing: 20px;
-        
         Text {
             text: title;
             color: white;
@@ -214,16 +242,15 @@ component AppGrid inherits Rectangle {
             font-weight: 600;
             horizontal-alignment: left;
         }
-        
+
         ScrollView {
-            GridBox {
+            VerticalBox {
                 spacing: 20px;
-                
                 for app[i] in apps: AppTile {
                     app: app;
-                    row: floor(i / 5);
-                    col: mod(i, 5);
-                    clicked => { root.app-clicked(app.id); }
+                    clicked => {
+                        root.app-clicked(app.id);
+                    }
                 }
             }
         }
@@ -235,87 +262,135 @@ component SettingsPanel inherits Rectangle {
     VerticalBox {
         spacing: 30px;
         padding: 40px;
-        
         Text {
             text: "Settings";
             color: white;
             font-size: 32px;
             font-weight: 700;
         }
-        
+
         VerticalBox {
             spacing: 20px;
-            
-            SettingsItem {
-                title: "Display & Sound";
-                description: "Resolution, HDR, Audio output";
-            }
-            
-            SettingsItem {
-                title: "Network";
-                description: "Wi-Fi, Ethernet, VPN";
-            }
-            
-            SettingsItem {
-                title: "Apps";
-                description: "Manage installed applications";
-            }
-            
-            SettingsItem {
-                title: "System";
-                description: "Updates, Storage, Restart";
-            }
-            
-            SettingsItem {
-                title: "Privacy & Security";
-                description: "Permissions, Parental controls";
-            }
-        }
-    }
-}
+            Rectangle {
+                height: 80px;
+                border-radius: 8px;
+                background: #ffffff10;
+                HorizontalBox {
+                    padding: 20px;
+                    spacing: 20px;
+                    VerticalBox {
+                        spacing: 5px;
+                        Text {
+                            text: "Display & Sound";
+                            color: white;
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
 
-// Settings item component
-component SettingsItem inherits Rectangle {
-    in property <string> title;
-    in property <string> description;
-    
-    height: 80px;
-    border-radius: 8px;
-    background: #ffffff10;
-    
-    HorizontalBox {
-        padding: 20px;
-        spacing: 20px;
-        
-        VerticalBox {
-            spacing: 5px;
-            
-            Text {
-                text: title;
-                color: white;
-                font-size: 18px;
-                font-weight: 600;
+                        Text {
+                            text: "Resolution, HDR, Audio output";
+                            color: #ffffff80;
+                            font-size: 14px;
+                        }
+                    }
+
+                    Rectangle {
+                        min-width: 50px; // Spacer
+                    }
+
+                    Text {
+                        text: ">";
+                        color: #ffffff60;
+                        font-size: 20px;
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    // Handle settings item click
+                }
             }
-            
-            Text {
-                text: description;
-                color: #ffffff80;
-                font-size: 14px;
+
+            Rectangle {
+                height: 80px;
+                border-radius: 8px;
+                background: #ffffff10;
+                HorizontalBox {
+                    padding: 20px;
+                    spacing: 20px;
+                    VerticalBox {
+                        spacing: 5px;
+                        Text {
+                            text: "Network";
+                            color: white;
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
+
+                        Text {
+                            text: "Wi-Fi, Ethernet, VPN";
+                            color: #ffffff80;
+                            font-size: 14px;
+                        }
+                    }
+
+                    Rectangle {
+                        min-width: 50px; // Spacer
+                    }
+
+                    Text {
+                        text: ">";
+                        color: #ffffff60;
+                        font-size: 20px;
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    // Handle settings item click
+                }
+            }
+
+            Rectangle {
+                height: 80px;
+                border-radius: 8px;
+                background: #ffffff10;
+                HorizontalBox {
+                    padding: 20px;
+                    spacing: 20px;
+                    VerticalBox {
+                        spacing: 5px;
+                        Text {
+                            text: "System";
+                            color: white;
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
+
+                        Text {
+                            text: "Updates, Storage, Restart";
+                            color: #ffffff80;
+                            font-size: 14px;
+                        }
+                    }
+
+                    Rectangle {
+                        min-width: 50px; // Spacer
+                    }
+
+                    Text {
+                        text: ">";
+                        color: #ffffff60;
+                        font-size: 20px;
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    // Handle settings item click
+                }
             }
         }
-        
-        Rectangle { width: 1fr; } // Spacer
-        
-        Text {
-            text: ">";
-            color: #ffffff60;
-            font-size: 20px;
-            vertical-alignment: center;
-        }
-    }
-    
-    TouchArea {
-        // Handle settings item click
     }
 }
 
@@ -334,8 +409,8 @@ export component AppWindow inherits Window {
     callback refresh-store();
     
     // Window properties
-    title: "Media OS";
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    title: "RanorTV";
+    background: #1a1a2e;
     
     // Keyboard handling
     FocusScope {
@@ -358,7 +433,6 @@ export component AppWindow inherits Window {
             }
             return reject;
         }
-        
         VerticalBox {
             // Top navigation
             TopBar {
@@ -371,39 +445,39 @@ export component AppWindow inherits Window {
             
             // Main content area
             Rectangle {
-                height: 1fr;
-                
+                background: transparent;
                 ScrollView {
                     padding: 40px;
-                    
                     VerticalBox {
                         spacing: 40px;
                         
                         // Content based on current tab
                         if current-tab == 0: VerticalBox {
                             spacing: 40px;
-                            
                             FeaturedSection {
                                 apps: featured-apps;
-                                app-clicked(id) => { root.launch-app(id); }
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
                             }
-                            
+
                             AppGrid {
                                 title: "Recently Used";
                                 apps: installed-apps;
-                                app-clicked(id) => { root.launch-app(id); }
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
                             }
                         }
-                        
                         if current-tab == 1: AppGrid {
                             title: "All Apps";
                             apps: installed-apps;
-                            app-clicked(id) => { root.launch-app(id); }
+                            app-clicked(id) => {
+                                root.launch-app(id);
+                            }
                         }
-                        
                         if current-tab == 2: VerticalBox {
                             spacing: 30px;
-                            
                             HorizontalBox {
                                 Text {
                                     text: "App Store";
@@ -411,24 +485,28 @@ export component AppWindow inherits Window {
                                     font-size: 32px;
                                     font-weight: 700;
                                 }
-                                
-                                Rectangle { width: 1fr; }
-                                
+
+                                Rectangle {
+                                    min-width: 100px; // Spacer
+                                }
+
                                 Button {
                                     text: "Refresh";
-                                    clicked => { root.refresh-store(); }
+                                    clicked => {
+                                        root.refresh-store();
+                                    }
                                 }
                             }
-                            
+
                             AppGrid {
                                 title: "Available Apps";
                                 apps: store-apps;
-                                app-clicked(id) => { root.launch-app(id); }
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
                             }
                         }
-                        
-                        if current-tab == 3: SettingsPanel {
-                        }
+                        if current-tab == 3: SettingsPanel { }
                     }
                 }
             }

@@ -1,5 +1,5 @@
 // Apple TV-style Media OS Launcher using Slint
-use slint::{ComponentHandle, Model, ModelRc, VecModel};
+use slint::{ComponentHandle, ModelRc, VecModel};
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
@@ -28,7 +28,7 @@ struct LauncherState {
     installed_apps: Vec<App>,
     store_apps: Vec<App>,
     apps_directory: String,
-    current_focus: (i32, i32), // (row, col) for grid navigation
+    // Removed unused current_focus field
 }
 
 impl Default for LauncherState {
@@ -39,7 +39,6 @@ impl Default for LauncherState {
             installed_apps: Vec::new(),
             store_apps: Vec::new(),
             apps_directory: String::from("/apps"),
-            current_focus: (0, 0),
         };
         state.load_apps();
         state
@@ -169,7 +168,7 @@ impl LauncherState {
 
     fn launch_app(&self, app_id: &str) {
         if let Some(app) = self.apps.get(app_id) {
-            println!("Launching app: {}", app.name);
+            println!("🚀 Launching app: {}", app.name);
             
             if app.executable_path.starts_with("builtin://") {
                 self.handle_builtin_app(&app.executable_path);
@@ -182,31 +181,31 @@ impl LauncherState {
     fn handle_builtin_app(&self, path: &str) {
         match path {
             "builtin://tv" => {
-                println!("Opening TV app...");
+                println!("📺 Opening TV app...");
                 // TODO: Implement TV interface
             }
             "builtin://movies" => {
-                println!("Opening Movies app...");
+                println!("🎬 Opening Movies app...");
                 // TODO: Implement movie library
             }
             "builtin://music" => {
-                println!("Opening Music app...");
+                println!("🎵 Opening Music app...");
                 // TODO: Implement music player
             }
             "builtin://photos" => {
-                println!("Opening Photos app...");
+                println!("📸 Opening Photos app...");
                 // TODO: Implement photo viewer
             }
             "builtin://settings" => {
-                println!("Opening Settings...");
+                println!("⚙️ Opening Settings...");
                 // TODO: Implement settings interface
             }
             "builtin://app_store" => {
-                println!("Opening App Store...");
+                println!("🏪 Opening App Store...");
                 // TODO: Implement app store
             }
             _ => {
-                println!("Unknown builtin app: {}", path);
+                println!("❓ Unknown builtin app: {}", path);
             }
         }
     }
@@ -217,11 +216,11 @@ impl LauncherState {
            .arg(&app.executable_path);
         
         match cmd.spawn() {
-            Ok(mut child) => {
-                println!("Launched {} (PID: {:?})", app.name, child.id());
+            Ok(child) => {
+                println!("✅ Launched {} (PID: {:?})", app.name, child.id());
             }
             Err(e) => {
-                eprintln!("Failed to launch {}: {}", app.name, e);
+                eprintln!("❌ Failed to launch {}: {}", app.name, e);
             }
         }
     }
@@ -244,6 +243,9 @@ fn apps_to_slint_model(apps: &[App]) -> ModelRc<AppItem> {
 }
 
 fn main() -> Result<(), slint::PlatformError> {
+    // Initialize Slint platform
+    println!("🎬 Starting RanorTV Launcher...");
+    
     let ui = AppWindow::new()?;
     let state = Rc::new(std::cell::RefCell::new(LauncherState::default()));
 
@@ -253,6 +255,9 @@ fn main() -> Result<(), slint::PlatformError> {
         ui.set_featured_apps(apps_to_slint_model(&state_ref.featured_apps));
         ui.set_installed_apps(apps_to_slint_model(&state_ref.installed_apps));
         ui.set_store_apps(apps_to_slint_model(&state_ref.store_apps));
+        
+        println!("📱 Loaded {} installed apps", state_ref.installed_apps.len());
+        println!("🌟 Featured {} apps", state_ref.featured_apps.len());
     }
 
     // Handle app launches
@@ -266,28 +271,26 @@ fn main() -> Result<(), slint::PlatformError> {
 
     // Handle navigation
     {
-        let ui_weak = ui.as_weak();
         ui.on_navigate(move |direction| {
-            let ui = ui_weak.unwrap();
             match direction.as_str() {
                 "up" => {
-                    println!("Navigate up");
+                    println!("⬆️ Navigate up");
                     // TODO: Implement focus management
                 }
                 "down" => {
-                    println!("Navigate down");
+                    println!("⬇️ Navigate down");
                     // TODO: Implement focus management
                 }
                 "left" => {
-                    println!("Navigate left");
+                    println!("⬅️ Navigate left");
                     // TODO: Implement focus management
                 }
                 "right" => {
-                    println!("Navigate right");
+                    println!("➡️ Navigate right");
                     // TODO: Implement focus management
                 }
                 "select" => {
-                    println!("Select current item");
+                    println!("✅ Select current item");
                     // TODO: Launch focused app
                 }
                 _ => {}
@@ -297,10 +300,9 @@ fn main() -> Result<(), slint::PlatformError> {
 
     // Handle tab switching
     {
-        let ui_weak = ui.as_weak();
         ui.on_switch_tab(move |tab| {
-            let ui = ui_weak.unwrap();
-            ui.set_current_tab(tab);
+            println!("📑 Switched to tab: {}", tab);
+            // Tab switching is handled by the UI automatically
         });
     }
 
@@ -309,17 +311,52 @@ fn main() -> Result<(), slint::PlatformError> {
         let state_clone = state.clone();
         let ui_weak = ui.as_weak();
         ui.on_refresh_store(move || {
-            let ui = ui_weak.unwrap();
-            // TODO: Implement store refresh
-            println!("Refreshing app store...");
+            println!("🔄 Refreshing app store...");
             
             // Mock adding new apps
             let mut state_ref = state_clone.borrow_mut();
-            // Add mock store apps here
+            
+            // Add some mock store apps
+            let mock_apps = vec![
+                App {
+                    id: "spotify".to_string(),
+                    name: "Spotify".to_string(),
+                    description: "Music streaming service".to_string(),
+                    icon_path: None,
+                    executable_path: "/apps/spotify/spotify".to_string(),
+                    installed: false,
+                    version: "1.0.0".to_string(),
+                    category: "Music".to_string(),
+                },
+                App {
+                    id: "youtube".to_string(),
+                    name: "YouTube".to_string(),
+                    description: "Video streaming platform".to_string(),
+                    icon_path: None,
+                    executable_path: "/apps/youtube/youtube".to_string(),
+                    installed: false,
+                    version: "2.1.0".to_string(),
+                    category: "Entertainment".to_string(),
+                },
+            ];
+            
+            for app in mock_apps {
+                state_ref.apps.insert(app.id.clone(), app);
+            }
+            
             state_ref.update_app_lists();
-            ui.set_store_apps(apps_to_slint_model(&state_ref.store_apps));
+            
+            if let Some(ui) = ui_weak.upgrade() {
+                ui.set_store_apps(apps_to_slint_model(&state_ref.store_apps));
+                println!("📦 Added {} apps to store", state_ref.store_apps.len());
+            }
         });
     }
 
+    
+    println!("🎯 RanorTV Launcher ready!");
+    println!("🎮 Use arrow keys to navigate, Enter to select");
+    println!("🖱️ Click on apps to launch them");
+    
     ui.run()
 }
