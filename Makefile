@@ -49,11 +49,11 @@ dev-setup:
 
 build-dev:
 	@echo "🔨 Building development version..."
-	@cargo build
+	@cd launcher && cargo build
 
 run-dev:
 	@echo "🚀 Running development version..."
-	@cargo run
+	@cd launcher && cargo run
 
 # ===============================
 # Static Binary Production

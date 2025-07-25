@@ -247,6 +247,10 @@ fn main() -> Result<(), slint::PlatformError> {
     println!("🎬 Starting RanorTV Launcher...");
     
     let ui = AppWindow::new()?;
+    
+    // Set window to fullscreen for kiosk mode
+    ui.window().set_fullscreen(true);
+    
     let state = Rc::new(std::cell::RefCell::new(LauncherState::default()));
 
     // Initialize the UI with app data
@@ -353,7 +357,6 @@ fn main() -> Result<(), slint::PlatformError> {
         });
     }
 
-    
     println!("🎯 RanorTV Launcher ready!");
     println!("🎮 Use arrow keys to navigate, Enter to select");
     println!("🖱️ Click on apps to launch them");

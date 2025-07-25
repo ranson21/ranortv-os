@@ -408,9 +408,17 @@ export component AppWindow inherits Window {
     callback switch-tab(int);
     callback refresh-store();
     
-    // Window properties
+    // Window properties for fullscreen kiosk mode
     title: "RanorTV";
     background: #1a1a2e;
+    
+    // Fullscreen configuration
+    no-frame: true;              // Remove window decorations
+    always-on-top: true;         // Keep on top (kiosk mode)
+    
+    // Set to screen size (will be overridden by Rust code)
+    width: 1920px;
+    height: 1080px;
     
     // Keyboard handling
     FocusScope {
