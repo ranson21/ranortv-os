@@ -17,6 +17,9 @@ export component AppWindow inherits Window {
     in-out property <int> featured-focus: 0;
     in-out property <int> apps-focus: 0;
     in-out property <int> store-focus: 0;
+    
+    // alignment property
+    in-out property <bool> featured-top-aligned: false;
 
     // callbacks
     callback launch-app(string);
@@ -57,29 +60,48 @@ export component AppWindow inherits Window {
             return reject;
         }
 
-        VerticalBox {
-            Rectangle {
-                height: 300px; // Spacer
-            }
-            // Main content area
-            Rectangle {
-                background: transparent;
-                ScrollView {
-                    padding: 40px;
-                    VerticalBox {
-                        spacing: 40px;
-                        FeaturedSection {
-                            apps: featured-apps;
-                            focused-index: root.featured-focus;
-                            app-clicked(id) => {
-                                root.launch-app(id);
-                            }
-                            focus-changed(index) => {
-                                root.featured-focus = index;
-                                root.focus-changed(0, index);
+        Rectangle {
+            width: 100%;
+            height: 100%;
+            FeaturedSection {
+                apps: featured-apps;
+                focused-index: root.featured-focus;
+                width: 100%;
+                height: 30%;
+                
+                // Use states for smooth native transitions
+                states [
+                    bottom when !root.featured-top-aligned: {
+                        y: parent.height - self.height;
+                        out {
+                            animate y {
+                                duration: 200ms;
+                                easing: ease-out;
                             }
                         }
                     }
+                    top when root.featured-top-aligned: {
+                        y: 0px;
+                        in {
+                            animate y {
+                                duration: 200ms;
+                                easing: ease-in;
+                            }
+                        }
+                        out {
+                            animate y {
+                                duration: 200ms;
+                                easing: ease-out;
+                            }
+                        }
+                    }
+                ]
+                app-clicked(id) => {
+                    root.launch-app(id);
+                }
+                focus-changed(index) => {
+                    root.featured-focus = index;
+                    root.focus-changed(0, index);
                 }
             }
         }

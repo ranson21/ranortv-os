@@ -86,8 +86,28 @@ pub fn handle_navigation(ui: &AppWindow, direction: &str) {
                 _ => {}
             }
         }
-        "up" => println!("⬆️ Navigate up"),
-        "down" => println!("⬇️ Navigate down"),
+        "up" => {
+            println!("⬆️ Navigate up");
+            // Toggle to bottom alignment (top-aligned = false)
+            match current_tab {
+                0 => {
+                    ui.set_featured_top_aligned(false);
+                    println!("🔻 Featured section aligned to bottom");
+                }
+                _ => {}
+            }
+        }
+        "down" => {
+            println!("⬇️ Navigate down");
+            // Toggle to top alignment (top-aligned = true)
+            match current_tab {
+                0 => {
+                    ui.set_featured_top_aligned(true);
+                    println!("🔺 Featured section aligned to top");
+                }
+                _ => {}
+            }
+        }
         _ => {}
     }
 }
