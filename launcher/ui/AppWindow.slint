@@ -23,6 +23,9 @@ export component AppWindow inherits Window {
     // alignment property
     in-out property <bool> featured-top-aligned: false;
 
+    // Background image property
+    in-out property <image> background-image;
+
     // Add these properties for date/time
     in-out property <string> current-date;
     in-out property <string> current-time;
@@ -67,58 +70,81 @@ export component AppWindow inherits Window {
             return reject;
         }
 
+        // Background image container
         Rectangle {
             width: 100%;
             height: 100%;
-
-            // Add the DateTime display in top-right corner
-            DateTimeDisplay {
-                date-text: root.current-date;
-                time-text: root.current-time;
-                x: parent.width - self.width;
-                y: 0px;
+            
+            // Background image with overlay
+            Image {
+                source: root.background-image;
+                width: 100%;
+                height: 100%;
+                image-fit: cover;
+                
+                // Add a semi-transparent overlay to ensure text readability
+                Rectangle {
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.4); // Dark overlay with 40% opacity
+                }
             }
 
-            FeaturedSection {
-                apps: featured-apps;
-                focused-index: root.featured-focus;
-                top-aligned: root.featured-top-aligned;
+            // Main content on top of background
+            Rectangle {
                 width: 100%;
-                height: 30%;
+                height: 100%;
+                background: transparent;
 
-                // Use states for smooth native transitions
-                states [
-                    bottom when !root.featured-top-aligned: {
-                        y: parent.height - self.height;
-                        out {
-                            animate y {
-                                duration: 200ms;
-                                easing: ease-out;
-                            }
-                        }
-                    }
-                    top when root.featured-top-aligned: {
-                        y: 0px;
-                        in {
-                            animate y {
-                                duration: 200ms;
-                                easing: ease-in;
-                            }
-                        }
-                        out {
-                            animate y {
-                                duration: 200ms;
-                                easing: ease-out;
-                            }
-                        }
-                    }
-                ]
-                app-clicked(id) => {
-                    root.launch-app(id);
+                // Add the DateTime display in top-right corner
+                DateTimeDisplay {
+                    date-text: root.current-date;
+                    time-text: root.current-time;
+                    x: parent.width - self.width;
+                    y: 0px;
                 }
-                focus-changed(index) => {
-                    root.featured-focus = index;
-                    root.focus-changed(0, index);
+
+                FeaturedSection {
+                    apps: featured-apps;
+                    focused-index: root.featured-focus;
+                    top-aligned: root.featured-top-aligned;
+                    width: 100%;
+                    height: 30%;
+
+                    // Use states for smooth native transitions
+                    states [
+                        bottom when !root.featured-top-aligned: {
+                            y: parent.height - self.height;
+                            out {
+                                animate y {
+                                    duration: 200ms;
+                                    easing: ease-out;
+                                }
+                            }
+                        }
+                        top when root.featured-top-aligned: {
+                            y: 0px;
+                            in {
+                                animate y {
+                                    duration: 200ms;
+                                    easing: ease-in;
+                                }
+                            }
+                            out {
+                                animate y {
+                                    duration: 200ms;
+                                    easing: ease-out;
+                                }
+                            }
+                        }
+                    ]
+                    app-clicked(id) => {
+                        root.launch-app(id);
+                    }
+                    focus-changed(index) => {
+                        root.featured-focus = index;
+                        root.focus-changed(0, index);
+                    }
                 }
             }
         }

@@ -8,6 +8,7 @@ pub struct App {
     pub description: String,
     pub icon: Option<String>,
     pub executable_path: String,
+    pub background: String,
     pub installed: bool,
     pub version: String,
     pub category: String,
