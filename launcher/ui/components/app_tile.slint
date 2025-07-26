@@ -10,11 +10,11 @@ export component AppTile inherits Rectangle {
     in property <bool> large: false;
     callback clicked();
 
-    width: large ? 280px : 200px;
-    height: large ? 160px : 120px;
-    border-radius: Theme.radius-md;
+    width: large ? 403px : 288px;  // 336 * 1.2 = 403, 240 * 1.2 = 288
+    height: large ? 230px : 173px; // 192 * 1.2 = 230, 144 * 1.2 = 173
+    border-radius: 15px;
     background: focused ? Theme.color-surface-focused : Theme.color-surface;
-    border-width: focused ? 2px : 0px;
+    border-width: 0px;
     border-color: Theme.color-text-muted;
 
     // Focus animation
@@ -23,44 +23,46 @@ export component AppTile inherits Rectangle {
     animate border-width { duration: 200ms; }
     animate opacity { duration: 200ms; }
 
-    // Drop shadow
-    Rectangle {
-        x: 2px;
-        y: 2px;
-        width: parent.width;
-        height: parent.height;
-        border-radius: parent.border-radius;
-        background: Theme.color-shadow;
-        z: -1;
+
+    // Full tile background image - positioned absolutely
+    Image {
+        source: app.icon;
+        x: 0px;
+        y: 0px;
+        width: root.width;
+        height: root.height;
+        image-fit: fill;  // Stretch to fill exactly, may slightly distort
+        image-rendering: smooth;
+        z: -0.5;  // Behind the overlay but above the shadow
     }
 
-    VerticalBox {
-        padding: Theme.spacing-sm;
-        spacing: Theme.spacing-xs;
-
-        // Icon
+    // Overlay for app name when focused
+    if focused: Rectangle {
+        width: parent.width;
+        height: 30px;
+        y: parent.height - 30px;
+        clip: true;  // Enable clipping
+        
+        // Inner rectangle with full rounded corners, positioned to show only bottom corners
         Rectangle {
-            height: large ? 80px : 60px;
-            background: #667eea;
-            border-radius: Theme.radius-sm;
-            Text {
-                text: app.name;
-                color: Theme.color-text;
-                font-size: large ? Theme.font-size-title : Theme.font-size-heading;
-                font-weight: 600;
-                horizontal-alignment: center;
-                vertical-alignment: center;
-            }
+            width: parent.width;
+            height: 60px;  // Taller than parent so top corners are clipped off
+            y: -30px;      // Position so top half is above the clipping boundary
+            background: Theme.color-shadow;
+            border-radius: 12px;  // Match your image corner radius
         }
 
-        // App name
         Text {
             text: app.name;
-            color: Theme.color-text;
+            color: white;
             font-size: large ? Theme.font-size-body : Theme.font-size-sm;
             font-weight: 500;
             horizontal-alignment: center;
+            vertical-alignment: center;
             overflow: elide;
+            z: 1;  // Ensure text is above the background rectangles
+            // Fade in animation
+            animate opacity { duration: 200ms; }
         }
     }
 

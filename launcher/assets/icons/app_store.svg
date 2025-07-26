@@ -1,0 +1,29 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" rx="12" fill="#007aff"/>
+  
+  <!-- Main download arrow -->
+  <path d="M100 25 L100 65" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M85 50 L100 65 L115 50" stroke="#ffffff" stroke-width="6" stroke-linecap="round" fill="none"/>
+  
+  <!-- Download platform/tray -->
+  <rect x="70" y="70" width="60" height="8" rx="4" fill="#ffffff"/>
+  
+  <!-- App grid icons -->
+  <rect x="45" y="25" width="12" height="12" rx="2" fill="#ffffff" opacity="0.7"/>
+  <rect x="45" y="42" width="12" height="12" rx="2" fill="#ffffff" opacity="0.7"/>
+  
+  <rect x="143" y="25" width="12" height="12" rx="2" fill="#ffffff" opacity="0.7"/>
+  <rect x="143" y="42" width="12" height="12" rx="2" fill="#ffffff" opacity="0.7"/>
+  
+  <!-- Small dots indicating more apps -->
+  <circle cx="51" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="59" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="67" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  
+  <circle cx="133" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="141" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="149" cy="90" r="2" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Subtle highlight on download arrow -->
+  <circle cx="100" cy="25" r="4" fill="#ffffff" opacity="0.8"/>
+</svg>

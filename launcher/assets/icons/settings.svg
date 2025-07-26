@@ -1,0 +1,26 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" rx="12" fill="#6b7280"/>
+  
+  <!-- Simple gear centered -->
+  <g transform="translate(100, 60)">
+    <!-- 8 gear teeth around the perimeter -->
+    <rect x="-3" y="-30" width="6" height="10" fill="#ffffff"/>
+    <rect x="-3" y="20" width="6" height="10" fill="#ffffff"/>
+    <rect x="-30" y="-3" width="10" height="6" fill="#ffffff"/>
+    <rect x="20" y="-3" width="10" height="6" fill="#ffffff"/>
+    
+    <!-- Diagonal teeth -->
+    <g transform="rotate(45)">
+      <rect x="-3" y="-30" width="6" height="10" fill="#ffffff"/>
+      <rect x="-3" y="20" width="6" height="10" fill="#ffffff"/>
+      <rect x="-30" y="-3" width="10" height="6" fill="#ffffff"/>
+      <rect x="20" y="-3" width="10" height="6" fill="#ffffff"/>
+    </g>
+    
+    <!-- Main gear body -->
+    <circle cx="0" cy="0" r="20" fill="#ffffff"/>
+    
+    <!-- Center hole -->
+    <circle cx="0" cy="0" r="8" fill="#6b7280"/>
+  </g>
+</svg>

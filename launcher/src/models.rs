@@ -6,7 +6,7 @@ pub struct App {
     pub id: String,
     pub name: String,
     pub description: String,
-    pub icon_path: Option<String>,
+    pub icon: Option<String>,
     pub executable_path: String,
     pub installed: bool,
     pub version: String,

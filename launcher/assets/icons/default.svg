@@ -1,0 +1,15 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" rx="12" fill="#94a3b8"/>
+  
+  <!-- Subtle app frame background - centered -->
+  <rect x="60" y="35" width="80" height="50" rx="6" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Large prominent question mark - properly centered -->
+  <text x="100" y="70" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="48" font-weight="bold" fill="#ffffff">?</text>
+  
+  <!-- Corner dots for decoration -->
+  <circle cx="40" cy="40" r="4" fill="#ffffff" opacity="0.5"/>
+  <circle cx="160" cy="40" r="4" fill="#ffffff" opacity="0.5"/>
+  <circle cx="40" cy="80" r="4" fill="#ffffff" opacity="0.5"/>
+  <circle cx="160" cy="80" r="4" fill="#ffffff" opacity="0.5"/>
+</svg>

@@ -68,82 +68,17 @@ export component AppWindow inherits Window {
                     padding: 40px;
                     VerticalBox {
                         spacing: 40px;
-                        // Content based on current tab
-                        if current-tab == 0: VerticalBox {
-                            spacing: 40px;
-                            FeaturedSection {
-                                apps: featured-apps;
-                                focused-index: root.featured-focus;
-                                app-clicked(id) => {
-                                    root.launch-app(id);
-                                }
-                                focus-changed(index) => {
-                                    root.featured-focus = index;
-                                    root.focus-changed(0, index);
-                                }
-                            }
-
-                            AppGrid {
-                                title: "Recently Used";
-                                apps: installed-apps;
-                                focused-index: root.apps-focus;
-                                app-clicked(id) => {
-                                    root.launch-app(id);
-                                }
-                                focus-changed(index) => {
-                                    root.apps-focus = index;
-                                    root.focus-changed(1, index);
-                                }
-                            }
-                        }
-                        if current-tab == 1: AppGrid {
-                            title: "All Apps";
-                            apps: installed-apps;
-                            focused-index: root.apps-focus;
+                        FeaturedSection {
+                            apps: featured-apps;
+                            focused-index: root.featured-focus;
                             app-clicked(id) => {
                                 root.launch-app(id);
                             }
                             focus-changed(index) => {
-                                root.apps-focus = index;
-                                root.focus-changed(1, index);
+                                root.featured-focus = index;
+                                root.focus-changed(0, index);
                             }
                         }
-                        if current-tab == 2: VerticalBox {
-                            spacing: 30px;
-                            HorizontalBox {
-                                Text {
-                                    text: "App Store";
-                                    color: white;
-                                    font-size: 32px;
-                                    font-weight: 700;
-                                }
-
-                                Rectangle {
-                                    min-width: 100px; // Spacer
-                                }
-
-                                Button {
-                                    text: "Refresh";
-                                    clicked => {
-                                        root.refresh-store();
-                                    }
-                                }
-                            }
-
-                            AppGrid {
-                                title: "Available Apps";
-                                apps: store-apps;
-                                focused-index: root.store-focus;
-                                app-clicked(id) => {
-                                    root.launch-app(id);
-                                }
-                                focus-changed(index) => {
-                                    root.store-focus = index;
-                                    root.focus-changed(2, index);
-                                }
-                            }
-                        }
-                        if current-tab == 3: SettingsPanel { }
                     }
                 }
             }

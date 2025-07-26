@@ -1,0 +1,40 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" rx="12" fill="#8b5cf6"/>
+  
+  <!-- TV/Screen bezel -->
+  <rect x="25" y="25" width="150" height="85" rx="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+  
+  <!-- Screen area -->
+  <rect x="35" y="35" width="130" height="75" rx="4" fill="#111827"/>
+  
+  <!-- Play button in center -->
+  <circle cx="100" cy="72" r="16" fill="#ffffff" opacity="0.9"/>
+  <path d="M92 64 L92 80 L108 72 Z" fill="#8b5cf6"/>
+  
+  <!-- Film strip elements on sides -->
+  <rect x="15" y="35" width="8" height="50" fill="#ffffff"/>
+  <rect x="177" y="35" width="8" height="50" fill="#ffffff"/>
+  
+  <!-- Film perforations -->
+  <rect x="16" y="40" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="16" y="50" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="16" y="60" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="16" y="70" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  
+  <rect x="178" y="40" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="178" y="50" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="178" y="60" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  <rect x="178" y="70" width="6" height="4" rx="1" fill="#8b5cf6"/>
+  
+  <!-- Subtle content suggestions on screen -->
+  <rect x="45" y="45" width="35" height="2" rx="1" fill="#ffffff" opacity="0.4"/>
+  <rect x="45" y="50" width="28" height="2" rx="1" fill="#ffffff" opacity="0.4"/>
+  
+  <rect x="120" y="45" width="35" height="2" rx="1" fill="#ffffff" opacity="0.4"/>
+  <rect x="120" y="50" width="25" height="2" rx="1" fill="#ffffff" opacity="0.4"/>
+  
+  <!-- Small indicator dots at bottom -->
+  <circle cx="90" cy="95" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="100" cy="95" r="2" fill="#ffffff"/>
+  <circle cx="110" cy="95" r="2" fill="#ffffff" opacity="0.6"/>
+</svg>
