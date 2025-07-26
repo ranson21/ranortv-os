@@ -6,6 +6,7 @@ description = "Apple TV-style media launcher for RanorTV OS"
 authors = ["RanorTV Team"]
 
 [dependencies]
+chrono = "0.4"
 # Slint UI framework - optimized for performance with GPU acceleration
 slint = { version = "1.12", default-features = false, features = [
   "std",

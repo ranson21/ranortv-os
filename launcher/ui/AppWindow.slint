@@ -1,4 +1,6 @@
 import { AppItem } from "components/app_item.slint";
+import { DateTimeDisplay } from "components/datetime_display.slint";
+
 import { TopBar } from "components/top_bar.slint";
 import { FeaturedSection } from "components/featured_section.slint";
 import { AppGrid } from "components/app_grid.slint";
@@ -20,6 +22,11 @@ export component AppWindow inherits Window {
     
     // alignment property
     in-out property <bool> featured-top-aligned: false;
+
+    // Add these properties for date/time
+    in-out property <string> current-date;
+    in-out property <string> current-time;
+    callback update-datetime(); // Callback to request time updates from Rust
 
     // callbacks
     callback launch-app(string);
@@ -63,6 +70,15 @@ export component AppWindow inherits Window {
         Rectangle {
             width: 100%;
             height: 100%;
+
+            // Add the DateTime display in top-right corner
+            DateTimeDisplay {
+                date-text: root.current-date;
+                time-text: root.current-time;
+                x: parent.width - self.width;
+                y: 0px;
+            }
+
             FeaturedSection {
                 apps: featured-apps;
                 focused-index: root.featured-focus;

@@ -1,4 +1,9 @@
 // styles/theme.slint
+import "../../assets/fonts/RobotoMono-Regular.ttf";
+import "../../assets/fonts/RobotoMono-Bold.ttf";
+import "../../assets/fonts/Montserrat-Regular.ttf";
+import "../../assets/fonts/Montserrat-Bold.ttf";
+
 export global Theme {
     // Colors
     in property <color> color-background: #1a1a2e;
@@ -17,6 +22,9 @@ export global Theme {
     in property <length> font-size-md: 24px;
     in property <length> font-size-lg: 32px;
     in property <length> font-size-xl: 48px;
+    out property <string> font-mono: "Montserrat";
+    out property <string> font-mono-bold: "Montserrat Bold";
+
 
     // Spacing
     in property <length> spacing-xs: 8px;
