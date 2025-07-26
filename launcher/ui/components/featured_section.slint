@@ -6,45 +6,62 @@ import { VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
 export component FeaturedSection inherits Rectangle {
     in property <[AppItem]> apps;
     in-out property <int> focused-index: 0;
+    in property <bool> top-aligned: false;
     callback app-clicked(string);
     callback focus-changed(int);
 
     height: 30%;
 
-    VerticalBox {
-        spacing: Theme.spacing-sm;
+    // Wrapper rectangle that sizes to content
+    Rectangle {
+        width: parent.width - 40px; // Full width minus 20px margin on each side
+        height: 160px + 120px; // Tile height + margin (20px top + 20px bottom)
+        x: 20px; // Left margin
+        y: root.top-aligned ? (parent.height - self.height) / 2 - 60px : (parent.height - self.height) / 2 + 60px; // Center vertically + offset down
 
-        ScrollView {
-            padding: 10px;
+        // Semi-transparent background with rounded edges
+        background: rgba(0, 0, 0, 0.3); // Black with 30% opacity - adjust as needed
+        border-radius: 12px; // Rounded corners - adjust radius as desired
 
-            Rectangle {
-                width: parent.width;
-                height: parent.height;
+        VerticalBox {
+            spacing: Theme.spacing-sm;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 16px;
+            padding-right: 16px;
 
-                // Use a simple approach with HorizontalBox but override positioning
-                HorizontalBox {
-                    spacing: 125px;
+            ScrollView {
+                padding: 0px;
+
+                Rectangle {
                     width: parent.width;
-                    height: 160px; // Height of the largest tile
-                    x: (parent.width - self.preferred-width) / 2; // Center the entire row horizontally
-                    y: (parent.height - self.height) / 2; // Center the entire row vertically
+                    height: parent.height;
 
-                    for app[i] in apps: Rectangle {
-                        width: i == root.focused-index ? 280px : 200px;
-                        height: 160px; // Container height matches largest tile
-                        
-                        AppTile {
-                            app: app;
-                            focused: i == root.focused-index;
-                            large: i == root.focused-index;
-                            
-                            // Center the tile within its container
-                            y: (parent.height - self.height) / 2;
+                    // Use a simple approach with HorizontalBox but override positioning
+                    HorizontalBox {
+                        spacing: 125px;
+                        width: parent.width;
+                        height: 160px; // Height of the largest tile
+                        x: (parent.width - self.preferred-width) / 2; // Center the entire row horizontally
+                        y: (parent.height - self.height) / 2; // Center the entire row vertically
 
-                            clicked => {
-                                root.focused-index = i;
-                                root.focus-changed(i);
-                                root.app-clicked(app.id);
+                        for app[i] in apps: Rectangle {
+                            width: i == root.focused-index ? 280px : 200px;
+                            height: 160px; // Container height matches largest tile
+
+                            AppTile {
+                                app: app;
+                                focused: i == root.focused-index;
+                                large: i == root.focused-index;
+
+                                // Center the tile within its container
+                                y: (parent.height - self.height) / 2;
+
+                                clicked => {
+                                    root.focused-index = i;
+                                    root.focus-changed(i);
+                                    root.app-clicked(app.id);
+                                }
                             }
                         }
                     }

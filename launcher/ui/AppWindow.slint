@@ -66,9 +66,10 @@ export component AppWindow inherits Window {
             FeaturedSection {
                 apps: featured-apps;
                 focused-index: root.featured-focus;
+                top-aligned: root.featured-top-aligned;
                 width: 100%;
                 height: 30%;
-                
+
                 // Use states for smooth native transitions
                 states [
                     bottom when !root.featured-top-aligned: {
