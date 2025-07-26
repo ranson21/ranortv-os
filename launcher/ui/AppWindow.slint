@@ -1,0 +1,161 @@
+import { AppItem } from "components/app_item.slint";
+import { TopBar } from "components/top_bar.slint";
+import { FeaturedSection } from "components/featured_section.slint";
+import { AppGrid } from "components/app_grid.slint";
+import { SettingsPanel } from "components/settings_panel.slint";
+import { Theme } from "styles/theme.slint";
+
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in-out property <int> current-tab: 0;
+    in-out property <[AppItem]> featured-apps;
+    in-out property <[AppItem]> installed-apps;
+    in-out property <[AppItem]> store-apps;
+
+    // focus properties
+    in-out property <int> featured-focus: 0;
+    in-out property <int> apps-focus: 0;
+    in-out property <int> store-focus: 0;
+
+    // callbacks
+    callback launch-app(string);
+    callback navigate(string);
+    callback switch-tab(int);
+    callback refresh-store();
+    callback focus-changed(int, int);
+
+    title: "RanorTV";
+    background: Theme.color-background;
+
+    // Fullscreen configuration
+    no-frame: true;              // Remove window decorations
+    always-on-top: true;         // Keep on top (kiosk mode)
+
+    // Set to screen size (will be overridden by Rust code)
+    width: 1920px;
+    height: 1080px;
+
+    FocusScope {
+        key-pressed(event) => {
+            if (event.text == Key.UpArrow) {
+                root.navigate("up");
+                return accept;
+            }
+            if (event.text == Key.DownArrow) {
+                root.navigate("down");
+                return accept;
+            }
+            if (event.text == Key.LeftArrow) {
+                root.navigate("left");
+                return accept;
+            }
+            if (event.text == Key.RightArrow) {
+                root.navigate("right");
+                return accept;
+            }
+            if (event.text == Key.Return) {
+                root.navigate("select");
+                return accept;
+            }
+            return reject;
+        }
+
+        VerticalBox {
+            TopBar {
+                current-tab: root.current-tab;
+                tab-clicked(index) => {
+                    root.current-tab = index;
+                    root.switch-tab(index);
+                }
+            }
+
+            // Main content area
+            Rectangle {
+                background: transparent;
+                ScrollView {
+                    padding: 40px;
+                    VerticalBox {
+                        spacing: 40px;
+                        // Content based on current tab
+                        if current-tab == 0: VerticalBox {
+                            spacing: 40px;
+                            FeaturedSection {
+                                apps: featured-apps;
+                                focused-index: root.featured-focus;
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.featured-focus = index;
+                                    root.focus-changed(0, index);
+                                }
+                            }
+
+                            AppGrid {
+                                title: "Recently Used";
+                                apps: installed-apps;
+                                focused-index: root.apps-focus;
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.apps-focus = index;
+                                    root.focus-changed(1, index);
+                                }
+                            }
+                        }
+                        if current-tab == 1: AppGrid {
+                            title: "All Apps";
+                            apps: installed-apps;
+                            focused-index: root.apps-focus;
+                            app-clicked(id) => {
+                                root.launch-app(id);
+                            }
+                            focus-changed(index) => {
+                                root.apps-focus = index;
+                                root.focus-changed(1, index);
+                            }
+                        }
+                        if current-tab == 2: VerticalBox {
+                            spacing: 30px;
+                            HorizontalBox {
+                                Text {
+                                    text: "App Store";
+                                    color: white;
+                                    font-size: 32px;
+                                    font-weight: 700;
+                                }
+
+                                Rectangle {
+                                    min-width: 100px; // Spacer
+                                }
+
+                                Button {
+                                    text: "Refresh";
+                                    clicked => {
+                                        root.refresh-store();
+                                    }
+                                }
+                            }
+
+                            AppGrid {
+                                title: "Available Apps";
+                                apps: store-apps;
+                                focused-index: root.store-focus;
+                                app-clicked(id) => {
+                                    root.launch-app(id);
+                                }
+                                focus-changed(index) => {
+                                    root.store-focus = index;
+                                    root.focus-changed(2, index);
+                                }
+                            }
+                        }
+                        if current-tab == 3: SettingsPanel { }
+                    }
+                }
+            }
+        }
+    }
+}

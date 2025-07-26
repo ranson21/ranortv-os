@@ -15,3 +15,4 @@ pub fn apps_to_slint_model(apps: &[App]) -> ModelRc<AppItem> {
         .collect();
     ModelRc::new(VecModel::from(items))
 }
+

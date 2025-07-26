@@ -1,0 +1,16 @@
+// Animations
+export animation focus-fade { duration: 200ms; }
+export animation focus-scale { duration: 200ms; easing: ease-in-out; }
+
+// Drop shadow helper
+export macro drop-shadow(target) {
+    Rectangle {
+        x: 2px;
+        y: 2px;
+        width: target.width;
+        height: target.height;
+        border-radius: target.border-radius;
+        background: #00000040;
+        z: -1;
+    }
+}

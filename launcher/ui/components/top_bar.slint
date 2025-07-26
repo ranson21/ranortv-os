@@ -1,0 +1,97 @@
+import { HorizontalBox } from "std-widgets.slint";
+import { Theme } from "../styles/theme.slint";
+
+
+export component TabButton inherits Rectangle {
+    in property <string> name;
+    in property <int> index;
+    in property <int> currentTab;
+    callback clicked();
+
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    background: currentTab == index ? Theme.color-surface-focused : transparent;
+    animate background { duration: 200ms; }
+
+    Text {
+        text: name;
+        color: currentTab == index ? Theme.color-text : Theme.color-text-muted;
+        font-size: Theme.font-size-body;
+        font-weight: currentTab == index ? 600 : 400;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    TouchArea {
+        clicked => {
+            root.clicked();
+        }
+    }
+}
+
+export component TopBar inherits Rectangle {
+    in property <int> current-tab;
+    callback tab-clicked(int);
+
+    height: 80px;
+    background: Theme.color-surface;
+
+    HorizontalBox {
+        padding: 20px;
+        spacing: 40px;
+        alignment: center;
+
+        Text {
+            text: "RanorTV";
+            color: Theme.color-text;
+            font-size: Theme.font-size-title;
+            font-weight: 700;
+            horizontal-alignment: center;
+        }
+
+        Rectangle {
+            min-width: 100px;
+        } // Spacer
+
+        HorizontalBox {
+            spacing: 30px;
+
+            TabButton {
+                name: "Home";
+                index: 0;
+                currentTab: root.current-tab;
+                clicked => {
+                    root.tab-clicked(self.index);
+                }
+            }
+
+            TabButton {
+                name: "Apps";
+                index: 1;
+                currentTab: root.current-tab;
+                clicked => {
+                    root.tab-clicked(self.index);
+                }
+            }
+
+            TabButton {
+                name: "Store";
+                index: 2;
+                currentTab: root.current-tab;
+                clicked => {
+                    root.tab-clicked(self.index);
+                }
+            }
+
+            TabButton {
+                name: "Settings";
+                index: 3;
+                currentTab: root.current-tab;
+                clicked => {
+                    root.tab-clicked(self.index);
+                }
+            }
+        }
+    }
+}

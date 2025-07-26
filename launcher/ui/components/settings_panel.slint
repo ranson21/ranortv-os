@@ -1,0 +1,60 @@
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
+import { Theme } from "../styles/theme.slint";
+
+export component SettingsPanel inherits Rectangle {
+    VerticalBox {
+        spacing: Theme.spacing-lg;
+        padding: Theme.spacing-lg;
+
+        Text {
+            text: "Settings";
+            color: Theme.color-text;
+            font-size: Theme.font-size-xl;
+            font-weight: 700;
+        }
+
+        for section in [
+            { title: "Display & Sound", subtitle: "Resolution, HDR, Audio output" },
+            { title: "Network", subtitle: "Wi-Fi, Ethernet, VPN" },
+            { title: "System", subtitle: "Updates, Storage, Restart" }
+        ]: Rectangle {
+            height: 80px;
+            border-radius: Theme.radius-md;
+            background: Theme.color-surface;
+
+            HorizontalBox {
+                padding: Theme.spacing-md;
+                spacing: Theme.spacing-md;
+
+                VerticalBox {
+                    spacing: 5px;
+                    Text {
+                        text: section.title;
+                        color: Theme.color-text;
+                        font-size: Theme.font-size-md;
+                        font-weight: 600;
+                    }
+
+                    Text {
+                        text: section.subtitle;
+                        color: Theme.color-text-muted;
+                        font-size: Theme.font-size-sm;
+                    }
+                }
+
+                Rectangle {
+                    min-width: 50px;
+                } // spacer
+
+                Text {
+                    text: ">";
+                    color: Theme.color-text-muted;
+                    font-size: Theme.font-size-md;
+                    vertical-alignment: center;
+                }
+            }
+
+            TouchArea { /* handle clicks */ }
+        }
+    }
+}

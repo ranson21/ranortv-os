@@ -1,0 +1,48 @@
+// components/featured_section.slint
+
+import { Theme } from "../styles/theme.slint";
+import { AppItem } from "app_item.slint";
+import { AppTile } from "app_tile.slint";
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
+
+export component FeaturedSection inherits Rectangle {
+    in property <[AppItem]> apps;
+    in-out property <int> focused-index: 0;
+    callback app-clicked(string);
+    callback focus-changed(int);
+
+    height: 400px;
+
+    VerticalBox {
+        spacing: Theme.spacing-sm;
+
+        Text {
+            text: "Featured";
+            color: Theme.color-text;
+            font-size: Theme.font-size-title;
+            font-weight: 700;
+            horizontal-alignment: left;
+        }
+
+        ScrollView {
+            height: 320px;
+
+            HorizontalBox {
+                spacing: 20px;
+                padding: 10px;
+
+                for app[i] in apps: AppTile {
+                    app: app;
+                    focused: i == root.focused-index;
+                    large: i == root.focused-index;
+
+                    clicked => {
+                        root.focused-index = i;
+                        root.focus-changed(i);
+                        root.app-clicked(app.id);
+                    }
+                }
+            }
+        }
+    }
+}

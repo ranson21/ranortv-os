@@ -1,0 +1,42 @@
+import { VerticalBox, ScrollView } from "std-widgets.slint";
+import { AppItem } from "app_item.slint";
+import { AppTile } from "app_tile.slint";
+import { Theme } from "../styles/theme.slint";
+
+export component AppGrid inherits Rectangle {
+    in property <[AppItem]> apps;
+    in property <string> title;
+    in-out property <int> focused-index: 0;
+    callback app-clicked(string);
+    callback focus-changed(int);
+
+    // Create one Theme instance
+
+    VerticalBox {
+        spacing: Theme.spacing-md;
+
+        Text {
+            text: title;
+            color: Theme.color-text;
+            font-size: Theme.font-size-lg;
+            font-weight: 600;
+        }
+
+        ScrollView {
+            VerticalBox {
+                spacing: Theme.spacing-md;
+
+                for app[i] in apps: AppTile {
+                    app: app;
+                    focused: i == root.focused-index;
+
+                    clicked => {
+                        root.focused-index = i;
+                        root.focus-changed(i);
+                        root.app-clicked(app.id);
+                    }
+                }
+            }
+        }
+    }
+}
