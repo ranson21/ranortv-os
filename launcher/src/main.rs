@@ -28,17 +28,6 @@ fn get_screen_resolution() -> Option<(u32, u32)> {
     }
 }
 
-fn get_background_for_category(category: &str) -> String {
-    match category.to_lowercase().as_str() {
-        "movies" | "video" => "assets/images/MoviesBackground.png".to_string(),
-        "music" | "audio" => "assets/images/MusicBackground.png".to_string(),
-        "photos" | "photography" => "assets/images/PhotosBackground.png".to_string(),
-        "settings" | "system" => "assets/images/SettingsBackground.png".to_string(),
-        "store" | "appstore" => "assets/images/AppStoreBackground.png".to_string(),
-        _ => "assets/images/DefaultBackground.png".to_string(),
-    }
-}
-
 fn main() -> Result<(), slint::PlatformError> {
     println!("🎬 Starting RanorTV Launcher...");
     let ui = AppWindow::new()?;
@@ -61,7 +50,7 @@ fn main() -> Result<(), slint::PlatformError> {
         
         // Set initial background based on first featured app
         if let Some(first_app) = state_ref.featured_apps.first() {
-            let bg_path = get_background_for_category(&first_app.category);
+            let bg_path = &first_app.background;
             ui.set_background_image(slint::Image::load_from_path(std::path::Path::new(&bg_path)).unwrap_or_default());
         }
     }
@@ -142,7 +131,7 @@ fn main() -> Result<(), slint::PlatformError> {
                 };
                 
                 if let Some(app) = focused_app {
-                    let bg_path = get_background_for_category(&app.category);
+                    let bg_path = &app.background;
                     if let Ok(image) = slint::Image::load_from_path(std::path::Path::new(&bg_path)) {
                         ui.set_background_image(image);
                     }
