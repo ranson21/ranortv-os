@@ -6,6 +6,7 @@ pub fn handle_navigation(ui: &AppWindow, direction: &str) {
     match direction {
         "left" => {
             println!("⬅️ Navigate left");
+
             // Move focus left
             match current_tab {
                 0 => {

@@ -32,10 +32,6 @@ export component AppWindow inherits Window {
     no-frame: true;              // Remove window decorations
     always-on-top: true;         // Keep on top (kiosk mode)
 
-    // Set to screen size (will be overridden by Rust code)
-    width: 1920px;
-    height: 1080px;
-
     FocusScope {
         key-pressed(event) => {
             if (event.text == Key.UpArrow) {
@@ -62,14 +58,9 @@ export component AppWindow inherits Window {
         }
 
         VerticalBox {
-            TopBar {
-                current-tab: root.current-tab;
-                tab-clicked(index) => {
-                    root.current-tab = index;
-                    root.switch-tab(index);
-                }
+            Rectangle {
+                height: 300px; // Spacer
             }
-
             // Main content area
             Rectangle {
                 background: transparent;

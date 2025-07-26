@@ -13,10 +13,30 @@ use actions::launch_app;
 use ui::{apps_to_slint_model, AppWindow};
 use navigation::handle_navigation;
 
+use std::fs;
+
+fn get_screen_resolution() -> Option<(u32, u32)> {
+    let res = fs::read_to_string("/sys/class/graphics/fb0/virtual_size").ok()?;
+    let parts: Vec<&str> = res.trim().split(',').collect();
+    if parts.len() == 2 {
+        let w = parts[0].parse().ok()?;
+        let h = parts[1].parse().ok()?;
+        Some((w, h))
+    } else {
+        None
+    }
+}
+
 fn main() -> Result<(), slint::PlatformError> {
     println!("🎬 Starting RanorTV Launcher...");
     let ui = AppWindow::new()?;
     ui.window().set_fullscreen(true);
+
+    // Set size to match actual resolution
+    if let Some((w, h)) = get_screen_resolution() {
+      println!("{}", h);
+      println!("{}", w);
+    }
 
     let state = Rc::new(RefCell::new(LauncherState::default()));
 
