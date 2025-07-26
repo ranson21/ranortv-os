@@ -12,10 +12,11 @@ export component AppTile inherits Rectangle {
 
     width: large ? 403px : 288px;  // 336 * 1.2 = 403, 240 * 1.2 = 288
     height: large ? 230px : 173px; // 192 * 1.2 = 230, 144 * 1.2 = 173
-    border-radius: 15px;
+    border-radius: 20px;
     background: focused ? Theme.color-surface-focused : Theme.color-surface;
     border-width: 0px;
     border-color: Theme.color-text-muted;
+    clip: true;  // Enable clipping
 
     // Focus animation
     opacity: focused ? 1.0 : 0.8;
@@ -49,7 +50,7 @@ export component AppTile inherits Rectangle {
             height: 60px;  // Taller than parent so top corners are clipped off
             y: -30px;      // Position so top half is above the clipping boundary
             background: Theme.color-shadow;
-            border-radius: 12px;  // Match your image corner radius
+            border-radius: 15px;  // Match your image corner radius
         }
 
         Text {
